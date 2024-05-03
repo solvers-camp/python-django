@@ -1,0 +1,40 @@
+{% extends "department_base.html" %}
+
+{% block title %}Add New Department{% endblock title %}
+
+{% block content %}
+<div class="col-md-12">    
+    <form method="POST" class="post-form" action="{% url 'department-create' %}">  
+        {% csrf_token %}  
+        <div class="container">  
+            <div class="col-12">  
+                <h4>Enter Department Details</h4>  
+            </div>    
+
+            <div class="mb-3"> 
+                <label>Department:</label>  
+                {{ form.department }}   
+            </div> 
+            <div class="mb-3"> 
+                <label>Head of Department:</label>  
+                {{ form.head_of_department }}   
+            </div>
+            <div class="mb-3"> 
+                <label>Number of Staff:</label>  
+                {{ form.number_of_staff }}   
+            </div>
+            <div class="mb-3"> 
+                <label>Contact Phone:</label>  
+                {{ form.contact_phone }}   
+            </div>  
+            <div class="mb-3"> 
+                <label>Contact Email:</label>  
+                {{ form.contact_email }}   
+            </div>
+            <div class="mb-3"> 
+                <button type="submit" class="btn btn-primary">Submit</button>    
+            </div> 
+        </div>  
+    </form>  
+</div> 
+{% endblock content %}
