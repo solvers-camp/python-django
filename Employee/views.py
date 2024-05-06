@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import EmployeeForm
-from .models import Employee
+from .models import Employee 
 
 def addnew(request):
     if request.method == "POST":
@@ -17,7 +17,7 @@ def index(request):
     return render(request, "index.html", {'employees': employees})
 
 def edit(request, id):
-    employee = Employee.objects.get(id=id)
+    employee = get_object_or_404(Employee, id=id)
     form = EmployeeForm(instance=employee)
     return render(request, 'edit.html', {'form': form, 'employee': employee})
 
