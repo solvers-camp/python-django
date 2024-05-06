@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import EmployeeForm
-from .models import Employee 
+from .models import Employee
 
 def addnew(request):
     if request.method == "POST":
@@ -22,17 +22,19 @@ def edit(request, id):
     return render(request, 'edit.html', {'form': form, 'employee': employee})
 
 def update(request, id):
-    employee = Employee.objects.get(id=id)
+    employee = get_object_or_404(Employee, id=id)
     form = EmployeeForm(request.POST, instance=employee)
     if form.is_valid():
         form.save()
         return redirect("index")
     else:
-            # If there are validation errors, print them to the console for debugging
-            print(form.errors)
+        # Log validation errors instead of printing to console
+        # logger.error(form.errors)
+        # You can configure Django logging to write to a file
+        pass
     return render(request, 'edit.html', {'form': form, 'employee': employee})
 
 def destroy(request, id):
-    employee = Employee.objects.get(id=id)
+    employee = get_object_or_404(Employee, id=id)
     employee.delete()
     return redirect("index")
