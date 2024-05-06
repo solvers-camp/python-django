@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect
 from .forms import EmployeeForm
 from .models import Employee
+from django.utils.html import escape
 
 def addnew(request):
     if request.method == "POST":
         form = EmployeeForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('index')
+            # Simulated XSS Vulnerability (DO NOT USE IN PRODUCTION)
+            employee_name = request.POST.get('name')
+            # Not sanitizing user input before rendering in template
+            return render(request, 'addnew.html', {'form': form, 'employee_name': employee_name})
     else:
         form = EmployeeForm()
     return render(request, 'addnew.html', {'form': form})
