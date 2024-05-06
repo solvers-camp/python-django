@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import EmployeeForm
 from .models import Employee
+from django.db import connection
+from django.db.utils import ProgrammingError
 
 def addnew(request):
     if request.method == "POST":
@@ -28,10 +30,16 @@ def update(request, id):
         form.save()
         return redirect("index")
     else:
-        # Log validation errors instead of printing to console
-        # logger.error(form.errors)
-        # You can configure Django logging to write to a file
-        pass
+        # Simulated SQL Injection Vulnerability (DO NOT USE IN PRODUCTION)
+        user_input = request.POST.get('user_input')
+        try:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE employee SET salary = %s WHERE id = %s" % (user_input, id))
+            return redirect("index")
+        except ProgrammingError as e:
+            # Log the error
+            # logger.error(str(e))
+            pass
     return render(request, 'edit.html', {'form': form, 'employee': employee})
 
 def destroy(request, id):
